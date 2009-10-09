@@ -61,3 +61,18 @@
   [file]
   (reduce process-ns empty-graph (find-ns-decls-in-dir file)))
 
+
+(defn fan-repr [g node]
+  (apply str (map #(str "\"" node "\" -> \"" % "\"\n") (get-neighbors g node))))
+
+(defn graph-pairs [graph]
+  (apply str (map (partial fan-repr graph) (:nodes graph))))
+
+(defn graph-to-dot [graph]
+  (str
+    "digraph G {\n"
+    (graph-pairs graph)
+    "}\n"
+    ))
+
+
