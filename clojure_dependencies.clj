@@ -1,7 +1,10 @@
 (ns clojure-graph
   (:import java.io.File)
-  (:use [clojure.set :only (union)])
-  (:use (clojure.contrib find-namespaces graph)))
+  (:use
+     [clojure.set :only (union)]
+     (clojure.contrib [find-namespaces :only (find-ns-decls-in-dir)]
+                      [graph :only (get-neighbors directed-graph)]
+                      [str-utils2 :only (join)])))
 
 
 (defn new-graph [nodes neighbors] (struct directed-graph nodes neighbors))
@@ -61,18 +64,22 @@
   [file]
   (reduce process-ns empty-graph (find-ns-decls-in-dir file)))
 
+(defn edge-repr [from to]
+  (str "\"" from "\" -> \"" to "\""))
 
-(defn fan-repr [g node]
-  (apply str (map #(str "\"" node "\" -> \"" % "\"\n") (get-neighbors g node))))
+(defn adj-list [graph]
+  (let [node-adj-list (fn [node]
+                       (map vector (repeat node) (get-neighbors graph node)))]
+    (mapcat node-adj-list (:nodes graph))))
 
-(defn graph-pairs [graph]
-  (apply str (map (partial fan-repr graph) (:nodes graph))))
+(defn dot-graph-edges [graph]
+  (let [al (adj-list graph)]
+    (join "\n" (map #(apply edge-repr %) al))))
 
 (defn graph-to-dot [graph]
   (str
     "digraph G {\n"
-    (graph-pairs graph)
-    "}\n"
-    ))
+    (dot-graph-edges graph)
+    "\n}\n"))
 
 
