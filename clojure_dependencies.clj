@@ -4,6 +4,7 @@
      [clojure.set :only (union)]
      (clojure.contrib [find-namespaces :only (find-ns-decls-in-dir)]
                       [graph :only (get-neighbors directed-graph)]
+                      [duck-streams :only (writer reader)]
                       [str-utils2 :only (join)])))
 
 
@@ -81,5 +82,12 @@
     "digraph G {\n"
     (dot-graph-edges graph)
     "\n}\n"))
+
+(defn write-dependency-graph 
+  [sourcedir out]
+  (with-open [out (writer out)]
+    (let [graph (dir-dependencies (File. sourcedir))
+          dot (graph-to-dot graph)]
+      (. out write dot))))
 
 
