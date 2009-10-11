@@ -1,26 +1,9 @@
-(ns clojure-graph
+(ns clojure-dependencies
   (:import java.io.File)
   (:use
-     [clojure.set :only (union)]
      (clojure.contrib [find-namespaces :only (find-ns-decls-in-dir)]
-                      [graph :only (get-neighbors directed-graph)]
-                      [duck-streams :only (writer reader)]
-                      [str-utils2 :only (join)])))
-
-
-(defn new-graph [nodes neighbors] (struct directed-graph nodes neighbors))
-
-(def empty-graph (new-graph #{} {}))
-
-(defn add-edge [graph from to]
-  (let [nodes (:nodes graph)
-        neighbors (:neighbors graph)]
-    (new-graph
-      (conj nodes from to)
-      (merge-with union neighbors {from #{to}}))))
-
-(defn add-fan [graph from & to]
-  (reduce #(add-edge %1 from %2) graph to))
+                      [duck-streams :only (writer reader)])
+     clojure-dependencies.graph clojure-dependencies.dot))
 
 
 
@@ -64,24 +47,6 @@
 (defn dir-dependencies
   [file]
   (reduce process-ns empty-graph (find-ns-decls-in-dir file)))
-
-(defn edge-repr [from to]
-  (str "\"" from "\" -> \"" to "\""))
-
-(defn adj-list [graph]
-  (let [node-adj-list (fn [node]
-                       (map vector (repeat node) (get-neighbors graph node)))]
-    (mapcat node-adj-list (:nodes graph))))
-
-(defn dot-graph-edges [graph]
-  (let [al (adj-list graph)]
-    (join "\n" (map #(apply edge-repr %) al))))
-
-(defn graph-to-dot [graph]
-  (str
-    "digraph G {\n"
-    (dot-graph-edges graph)
-    "\n}\n"))
 
 (defn write-dependency-graph 
   [sourcedir out]
