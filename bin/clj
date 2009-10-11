@@ -1,0 +1,8 @@
+#!/bin/bash
+
+SRC_DIR=src
+CLJ_COMMAND="clj"
+
+CS=$CLASSPATH:$SRC_DIR:.
+
+CLASSPATH=$CS $CLJ_COMMAND "$@"
