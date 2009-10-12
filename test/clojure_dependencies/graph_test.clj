@@ -10,8 +10,8 @@
 (defn size [g] (count (:nodes g)))
 
 (defmacro eq-nodes [nodes, g]
-  `(is (= #{} (difference (set ~nodes) (:nodes ~g))))
-  `(is (= #{} (difference (:nodes ~g) (set ~nodes)))))
+  `(is (= #{} (difference (set ~nodes) (set (:nodes ~g)))))
+  `(is (= #{} (difference (set (:nodes ~g)) (set ~nodes)))))
 
 (defmacro has-edges 
   ([graph] true)
@@ -72,3 +72,29 @@
     (has-edges m12 1 2)
     (has-edges m123 1 2 1 3)
     (has-edges m123-456 1 2 1 3 4 5 4 6)))
+
+(deftest graph-filter
+  (let [gab   (g/add-edge eg 'a 'b)
+        gaa   (g/add-edge eg 'a 'a)
+        gabc  (-> eg (g/add-edge 'a 'b) (g/add-edge 'b 'c))
+        gabca (-> eg (g/add-edge 'a 'b) (g/add-edge 'b 'c) (g/add-edge 'c 'a))]
+
+    (eq-nodes [] (g/filter-graph empty-graph (constantly true)))
+    (eq-nodes [] (g/filter-graph empty-graph (constantly false)))
+    (eq-nodes ['a 'b] (g/filter-graph gab (constantly true)))
+    (eq-nodes ['a] (g/filter-graph gab #(= 'a %)))
+    (eq-nodes ['b] (g/filter-graph gab #(= 'b %)))
+    (eq-nodes [] (g/filter-graph gab (constantly false)))
+    (eq-nodes ['a 'b 'c] (g/filter-graph gabc (constantly true)))
+    (eq-nodes ['a 'c] (g/filter-graph gabc #(not= 'b %)))
+
+    (has-edges (g/filter-graph empty-graph (constantly true))) 
+    (has-edges (g/filter-graph empty-graph (constantly false)))
+    (has-edges (g/filter-graph gab (constantly true)) 'a 'b)
+    (has-edges (g/filter-graph gab #(= 'a %)))
+    (has-edges (g/filter-graph gab #(= 'b %)))
+    (has-edges (g/filter-graph gab (constantly false)))
+    (has-edges (g/filter-graph gabc (constantly true)) 'a 'b 'b 'c)
+    (has-edges (g/filter-graph gabc #(not= 'b %)))
+    ))
+
