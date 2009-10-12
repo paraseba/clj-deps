@@ -1,4 +1,4 @@
-(ns clojure-dependencies.deps)
+(ns clj-deps.deps)
 
 (defn- is-dependency? [form]
   (and (list? form) (#{:require :use} (first form))))

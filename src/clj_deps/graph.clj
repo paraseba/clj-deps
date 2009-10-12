@@ -1,4 +1,4 @@
-(ns clojure-dependencies.graph
+(ns clj-deps.graph
   (:use
      [clojure.set :only (union)]
      (clojure.contrib [graph :only (directed-graph)])))

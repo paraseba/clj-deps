@@ -1,17 +1,17 @@
-(ns clojure-dependencies
+(ns clj-deps
   (:import java.io.File)
   (:use
      (clojure.contrib [find-namespaces :only (find-ns-decls-in-dir)]
                       [duck-streams :only (writer reader)])
-     clojure-dependencies.graph clojure-dependencies.dot clojure-dependencies.deps))
+     clj-deps.graph clj-deps.dot clj-deps.deps))
 
 
 (defn dir-dependency-map
   [file]
-  (let [to-map (fn [res-map ns-form]
-                (let [deps (process-ns ns-form)
-                      [name & deps] deps]
-                  (assoc res-map name deps)))]
+  (letfn [(to-map [res-map ns-form]
+            (let [deps (process-ns ns-form)
+                  [name & deps] deps]
+              (assoc res-map name deps)))]
   (reduce to-map {} (find-ns-decls-in-dir file))))
 
 (defn dir-dependency-graph

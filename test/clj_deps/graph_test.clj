@@ -1,7 +1,7 @@
-(ns test.clojure-dependencies.graph-test
+(ns test.clj-deps.graph-test
   (:use (clojure test [set :only (union)]))
   (:require
-     [clojure-dependencies.graph :as g]))
+     [clj-deps.graph :as g]))
 
 (def eg g/empty-graph)
 

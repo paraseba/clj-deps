@@ -1,9 +1,9 @@
 (ns test.run-tests
   (:use [clojure.test :only (run-tests)]))
 
-(def test-namespaces ['test.clojure-dependencies.graph-test
-                      'test.clojure-dependencies.dot-test
-                      'test.clojure-dependencies.deps-test])
+(def test-namespaces ['test.clj-deps.graph-test
+                      'test.clj-deps.dot-test
+                      'test.clj-deps.deps-test])
 
 (apply require test-namespaces)
 

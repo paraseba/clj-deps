@@ -1,4 +1,4 @@
-(ns clojure-dependencies.dot
+(ns clj-deps.dot
   (:use
      (clojure.contrib [graph :only (get-neighbors)]
                       [str-utils2 :only (join)])))

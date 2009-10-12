@@ -1,7 +1,7 @@
-(ns test.clojure-dependencies.deps-test
+(ns test.clj-deps.deps-test
   (:use (clojure test))
   (:require
-     [clojure-dependencies.deps :as dep]))
+     [clj-deps.deps :as dep]))
 
 (defmacro test-deps [libs, ns-form]
   (let [form `(quote ~ns-form)

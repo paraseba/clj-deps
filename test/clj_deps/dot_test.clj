@@ -1,9 +1,9 @@
-(ns test.clojure-dependencies.dot-test
+(ns test.clj-deps.dot-test
   (:use (clojure test)
         (clojure.contrib [graph :only (get-neighbors)]))
   (:require
-     [clojure-dependencies.graph :as g]
-     [clojure-dependencies.dot :as d]))
+     [clj-deps.graph :as g]
+     [clj-deps.dot :as d]))
 
 
 (deftest edge-repr
