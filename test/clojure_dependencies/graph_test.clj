@@ -59,3 +59,16 @@
     (has-edges g23 1 2 1 3)
     (has-edges g231 1 2 1 3 1 1)
     (has-edges g232 1 2 1 3 1 2)))
+
+(deftest map-to-graph
+  (let [m12  (g/map-to-graph {1 [2]})
+        m123 (g/map-to-graph {1 [2 3]})
+        m123-456 (g/map-to-graph {1 [2 3] 4 [5 6]})]
+
+    (eq-nodes [1 2] m12)
+    (eq-nodes [1 2 3] m123)
+    (eq-nodes [1 2 3 4 5 6] m123-456)
+
+    (has-edges m12 1 2)
+    (has-edges m123 1 2 1 3)
+    (has-edges m123-456 1 2 1 3 4 5 4 6)))

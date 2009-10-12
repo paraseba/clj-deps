@@ -18,3 +18,5 @@
 (defn add-fan [graph from & to]
   (reduce #(add-edge %1 from %2) graph to))
 
+(defn map-to-graph [m]
+  (reduce #(apply add-fan %1 (first %2) (second %2)) empty-graph m))

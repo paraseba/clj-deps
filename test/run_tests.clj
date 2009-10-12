@@ -1,11 +1,14 @@
 (ns test.run-tests
   (:use [clojure.test :only (run-tests)]))
 
-(load "clojure_dependencies/graph_test" "clojure_dependencies/dot_test")
+(def test-namespaces ['test.clojure-dependencies.graph-test
+                      'test.clojure-dependencies.dot-test
+                      'test.clojure-dependencies.deps-test])
+
+(apply require test-namespaces)
 
 (defn main []
   (println "Running tests...")
-  (run-tests 'test.clojure-dependencies.graph-test
-             'test.clojure-dependencies.dot-test))
+  (apply run-tests test-namespaces))
 
 (main)

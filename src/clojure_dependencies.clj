@@ -3,56 +3,25 @@
   (:use
      (clojure.contrib [find-namespaces :only (find-ns-decls-in-dir)]
                       [duck-streams :only (writer reader)])
-     clojure-dependencies.graph clojure-dependencies.dot))
+     clojure-dependencies.graph clojure-dependencies.dot clojure-dependencies.deps))
 
 
-
-(defn is-dependency? [form]
-  (and (list? form) (#{:require :use} (first form))))
-
-(defn is-libspec? [spec]
-  (or (symbol? spec) (vector? spec)))
-
-(defn is-prefix-list? [spec]
-  (list? spec))
-
-(defn libspec-dependency [spec]
-  (cond
-    (symbol? spec) (str spec)
-    (vector? spec) (str (first spec))
-    :else "###spec error###"))
-
-(defn prefix-list-dependencies [spec]
-  (let [[prefix & libspecs] spec]
-    (vec (map #(str prefix "." (libspec-dependency %)) libspecs))))
-
-
-(defn spec-dependencies [spec]
-  (cond
-    (is-libspec? spec) [(libspec-dependency spec)]
-    (is-prefix-list? spec) (prefix-list-dependencies spec)
-    :else ['unknown]))
-
-
-(defn extract-dependencies [form]
-  (when-let [dep-type (and (is-dependency? form) (first form))]
-    (mapcat spec-dependencies (next form))))
-
-
-(defn process-ns [graph form]
-  (let [[ns name & forms] form]
-    (reduce #(apply add-fan %1 (str name) (extract-dependencies %2)) graph forms)))
-
-
-(defn dir-dependencies
+(defn dir-dependency-map
   [file]
-  (reduce process-ns empty-graph (find-ns-decls-in-dir file)))
+  (let [to-map (fn [res-map ns-form]
+                (let [deps (process-ns ns-form)
+                      [name & deps] deps]
+                  (assoc res-map name deps)))]
+  (reduce to-map {} (find-ns-decls-in-dir file))))
+
+(defn dir-dependency-graph
+  [file]
+  (map-to-graph (dir-dependency-map file)))
 
 (defn write-dependency-graph 
   [sourcedir out]
   (with-open [out (writer out)]
-    (let [graph (dir-dependencies (File. sourcedir))
+    (let [graph (dir-dependency-graph (File. sourcedir))
           dot (graph-to-dot graph)]
       (. out write dot))))
-
 
