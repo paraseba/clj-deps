@@ -11,7 +11,7 @@
   (letfn [(to-map [res-map ns-form]
             (let [deps (process-ns ns-form)
                   [name & deps] deps]
-              (assoc res-map name deps)))]
+              (assoc res-map name (or deps '()))))]
   (reduce to-map {} (find-ns-decls-in-dir file))))
 
 (defn dir-dependency-graph
