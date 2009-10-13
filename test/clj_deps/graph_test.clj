@@ -5,12 +5,12 @@
 
 (def eg g/empty-graph)
 
-(defn- edge-list-to-map
+(defn edge-list-to-map
   [& edges]
   (letfn [(add-edge [m [from to]] (merge-with union m {from #{to}}))]
     (reduce add-edge {} (partition 2 edges))))
 
-(defn- eval-map-equal
+(defn eval-map-equal
   [m1 m2]
   (reduce #(and %1 (= (set (m1 %2)) (set (m2 %2)))) true (keys m1)))
 
