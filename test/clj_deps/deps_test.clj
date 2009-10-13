@@ -42,7 +42,7 @@
 
 (deftest mixed
   (test-deps (l1 l2 l3.a l3.b l4 l5) 
-             (ns #^{:outhro "SBG"} my-ns "docstring"
+             (ns #^{:author "SBG"} my-ns "docstring"
                (:use l1 [l2 :as p])
                (:require (l3 a [b :only p :as g]) l4 [l5])
                (:import java.util.Date (java.sql Connection))
