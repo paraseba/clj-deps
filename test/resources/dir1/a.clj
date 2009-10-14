@@ -1,3 +1,3 @@
-(ns test.resources.dir1.a
-  (:use test.resources.dir1.b))
+(ns dir1.a
+  (:use dir1.b))
 

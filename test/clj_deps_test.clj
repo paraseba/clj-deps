@@ -8,34 +8,75 @@
 (def source-tree-dir (File. (.. (File. *file*) (getParent)) "resources"))
 (def source-tree-dir-name (.getPath source-tree-dir))
 
-(def dep-map (m/dir-dependency-map source-tree-dir))
-
 (deftest dir-dependency-map
-  (is dep-map)
-  (is (= {'test.resources.a '(test.resources.b test.resources.dir1.a)
-          'test.resources.b '(test.resources.dir2.a test.resources.dir2.b)
-          'test.resources.dir1.a '(test.resources.dir1.b)
-          'test.resources.dir1.b '()
-          'test.resources.dir2.a '()
-          'test.resources.dir2.b '(test.resources.dir1.b)}
-         dep-map)))
+  (is (= {'a '(b dir1.a)
+          'b '(dir2.a dir2.b)
+          'dir1.a '(dir1.b)
+          'dir1.b '()
+          'dir2.a '()
+          'dir2.b '(dir1.b)}
+         (m/dir-dependency-map source-tree-dir))))
 
 
 
 (def dep-graph (m/dir-dependency-graph source-tree-dir))
 
 (deftest dir-dependency-graph
-  (is dep-graph)
   (gt/graph-has-edges dep-graph
-    'test.resources.a 'test.resources.b
-    'test.resources.a 'test.resources.dir1.a
-    'test.resources.b 'test.resources.dir2.a
-    'test.resources.b 'test.resources.dir2.b
-    'test.resources.dir1.a 'test.resources.dir1.b
-    'test.resources.dir2.b 'test.resources.dir1.b))
+    'a 'b
+    'a 'dir1.a
+    'b 'dir2.a
+    'b 'dir2.b
+    'dir1.a 'dir1.b
+    'dir2.b 'dir1.b)
+
+  (deftest filters
+         
+    (gt/graph-has-edges (m/dir-dependency-graph source-tree-dir :only (constantly true))
+      'a 'b
+      'a 'dir1.a
+      'b 'dir2.a
+      'b 'dir2.b
+      'dir1.a 'dir1.b
+      'dir2.b 'dir1.b)
+           
+    (gt/graph-has-edges (m/dir-dependency-graph source-tree-dir :only #(re-find #"^(a|b)|(dir1\..*)$" (name %)))
+      'a 'b
+      'a 'dir1.a
+      'dir1.a 'dir1.b)
+
+    (gt/graph-has-edges (m/dir-dependency-graph source-tree-dir :only #(re-find #"^(a|b)|(dir1\..*)$" (name %)))
+      'a 'b
+      'a 'dir1.a
+      'dir1.a 'dir1.b)
+
+    (gt/graph-has-edges (m/dir-dependency-graph source-tree-dir :except #(re-find #"dir" (name %)))
+      'a 'b)
+
+    (gt/graph-has-edges (m/dir-dependency-graph source-tree-dir :only-matching #"dir")
+      'dir1.a 'dir1.b
+      'dir2.b 'dir1.b)
+
+    (gt/graph-has-edges (m/dir-dependency-graph source-tree-dir :except-matching #"dir2")
+      'a 'b
+      'a 'dir1.a
+      'dir1.a 'dir1.b)
+
+    (deftest combined-filters
+      (gt/graph-has-edges (m/dir-dependency-graph source-tree-dir :only-matching #"dir" :except-matching #"dir2")
+      'dir1.a 'dir1.b))))
+
+
 
 (deftest write-dependency-graph
   (let [file (File/createTempFile "clj-deps-test" "dot")]
     (.deleteOnExit file)
     (m/write-dependency-graph source-tree-dir-name file)
-    (is (= (graph-to-dot dep-graph) (slurp (.getPath file))))))
+    (is (= (graph-to-dot dep-graph) (slurp (.getPath file)))))
+
+  (deftest accepts-filter-parameters
+    (let [file (File/createTempFile "clj-deps-filter-test" "dot")
+          graph (m/dir-dependency-graph source-tree-dir :only-matching #"dir" :except-matching #"dir2")]
+      (.deleteOnExit file)
+      (m/write-dependency-graph source-tree-dir-name file :only-matching #"dir" :except-matching #"dir2")
+      (is (= (graph-to-dot graph) (slurp (.getPath file)))))))

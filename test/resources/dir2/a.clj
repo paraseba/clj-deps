@@ -1,2 +1,2 @@
-(ns test.resources.dir2.a)
+(ns dir2.a)
 
