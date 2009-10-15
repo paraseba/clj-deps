@@ -39,6 +39,12 @@ You can see other examples in [the wiki](http://wiki.github.com/paraseba/clj-dep
 ToDo
 ====
 
+* Use Maven
+* Namespace translation
+* Custom node attributes
+* Command line interface
+* Automatic image generation
+
 Since we have a graph, we can do pretty interesting stuff like:
 
 * Cycle detection
