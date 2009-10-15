@@ -30,13 +30,12 @@ If then you do:
 
      dot -Tpng clj-deps.dot -o clj-deps.png
 
-you turn that `.dot` file into this image
+you turn that `.dot` file into this image (click to enlarge):
 
 <a href="http://cloud.github.com/downloads/paraseba/clj-deps/clj-deps.png" title="clj-deps dependency graph">
-  <img src="http://cloud.github.com/downloads/paraseba/clj-deps/clj-deps.png" style="width=100%;border:1px solid silver;"/>
+  <img src="http://cloud.github.com/downloads/paraseba/clj-deps/clj-deps-thumb.png" style="width=100%;border:1px solid silver;"/>
 </a>
 
-You can see more interesting examples in [the wiki](http://wiki.github.com/paraseba/clj-deps).
 
 ToDo
 ====
