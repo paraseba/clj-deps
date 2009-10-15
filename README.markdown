@@ -32,9 +32,12 @@ If then you do:
 
 you turn that `.dot` file into this image
 
-![clj-deps dependency graph](http://cloud.github.com/downloads/paraseba/clj-deps/clj-deps.png "clj-deps dependency graph (without tests)")
+<a href="http://cloud.github.com/downloads/paraseba/clj-deps/clj-deps.png" title="clj-deps dependency graph">
+  <img src="http://cloud.github.com/downloads/paraseba/clj-deps/clj-deps.png" style="width=100%;border:1px solid silver;"/>
+</a>
 
-You can see other examples in [the wiki](http://wiki.github.com/paraseba/clj-deps).
+
+You can see more interesting examples in [the wiki](http://wiki.github.com/paraseba/clj-deps).
 
 ToDo
 ====
