@@ -36,7 +36,6 @@ you turn that `.dot` file into this image
   <img src="http://cloud.github.com/downloads/paraseba/clj-deps/clj-deps.png" style="width=100%;border:1px solid silver;"/>
 </a>
 
-
 You can see more interesting examples in [the wiki](http://wiki.github.com/paraseba/clj-deps).
 
 ToDo
@@ -55,4 +54,9 @@ Since we have a graph, we can do pretty interesting stuff like:
 * What not.
 
 
+Inspiration
+===========
+
+This is my first clojure project and my first clojure code lines. It was fun to code and it helped
+me discover the clojure API and some contrib libraries. It was inspired by an image on the [cascade project](http://github.com/hlship/cascade).
 
