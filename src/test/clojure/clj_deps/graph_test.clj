@@ -1,4 +1,4 @@
-(ns test.clj-deps.graph-test
+(ns clj-deps.graph-test
   (:use (clojure test [set :only (union)]))
   (:require
      [clj-deps.graph :as g]))

@@ -13,10 +13,14 @@ some namespaces of your system or its dependencies.
 Usage
 =====
 
-* Install `clj-deps`, it depends on `clojure` and `clojure-contrib`.
-* In the `bin` directory you will find an executable you can use to set the
-  `CLASSPATH`
-* Launch the REPL and call the functions you need.
+* You need Maven 2 installed in your system
+* Install `clj-deps` cloning the repository: `git clone git://github.com/paraseba/clj-deps.git`
+* Run `mvn install`
+* There are some useful goals:
+    * `mvn clojure:test` will run all tests.
+    * `mvn clojure:repl` will give you a REPL with CLASSPATH set.
+* From there you can do `(use 'clj-deps)` and call the functions you need.
+
 
 Example
 ========
@@ -40,7 +44,8 @@ you turn that `.dot` file into this image (click to enlarge):
 ToDo
 ====
 
-* Use Maven
+* Document
+* Add to Maven repo
 * Namespace translation
 * Custom node attributes
 * Command line interface

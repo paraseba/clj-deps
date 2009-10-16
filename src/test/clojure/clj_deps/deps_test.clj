@@ -1,4 +1,4 @@
-(ns test.clj-deps.deps-test
+(ns clj-deps.deps-test
   (:use (clojure test))
   (:require
      [clj-deps.deps :as dep]))

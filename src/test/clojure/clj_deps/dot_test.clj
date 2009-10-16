@@ -1,4 +1,4 @@
-(ns test.clj-deps.dot-test
+(ns clj-deps.dot-test
   (:use (clojure test)
         (clojure.contrib [graph :only (get-neighbors)]))
   (:require

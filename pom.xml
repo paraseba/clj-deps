@@ -1,0 +1,68 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ar.com.grantaire</groupId>
+  <artifactId>clj-deps</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>clj-deps</name>
+  <url>http://github.com/paraseba/clj-deps</url>
+  <description>Generate graph of clojure namespaces dependencies</description>
+
+  <dependencies>
+    <dependency>
+      <!-- Pick up the Clojure dependency as transitive. -->
+      <groupId>org.clojure</groupId>
+      <artifactId>clojure-contrib</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>jline</groupId>
+      <artifactId>jline</artifactId>
+      <version>0.9.94</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.theoryinpractise</groupId>
+        <artifactId>clojure-maven-plugin</artifactId>
+        <version>1.1</version>
+
+        <configuration>
+          <testScript>src/test/clojure/run_tests.clj</testScript>
+        </configuration>
+
+        <!-- it doesn't bind automatically to default phases -->
+        <executions>
+          <execution>
+            <id>compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+
+          <execution>
+            <id>test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <!-- Source of Clojure snapshot dependencies. -->
+  <repositories>
+    <repository>
+      <id>tapestry-snapshots</id>
+      <url>http://tapestry.formos.com/maven-snapshot-repository/</url>
+    </repository>
+  </repositories>
+
+</project>
