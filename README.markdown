@@ -14,12 +14,30 @@ Usage
 =====
 
 * You need Maven 2 installed in your system
-* Install `clj-deps` cloning the repository: `git clone git://github.com/paraseba/clj-deps.git`
+* Install clj-deps cloning the repository: `git clone git://github.com/paraseba/clj-deps.git`
 * Run `mvn install`
 * There are some useful goals:
-    * `mvn clojure:test` will run all tests.
+    * `mvn test` will run all tests.
     * `mvn clojure:repl` will give you a REPL with CLASSPATH set.
 * From there you can do `(use 'clj-deps)` and call the functions you need.
+* If you plan to use clj-deps in your project, you can add it in your pom.xml dependencies
+  section, and let Maven install it for you. To do this, add to your pom.xml file:
+
+         <repositories>
+           <repository>
+             <id>ar.com.grantaire</id>
+             <url>http://maven.grantaire.com.ar</url>
+           </repository>
+         </repositories>
+
+         <dependencies>
+           <dependency>
+             <groupId>ar.com.grantaire</groupId>
+             <artifactId>clj-deps</artifactId>
+             <version>1.0-SNAPSHOT</version>
+           </dependency>
+         </dependencies>
+
 
 
 Example
@@ -29,12 +47,12 @@ This call
 
      (write-dependency-graph "clj-deps/src" "clj-deps.dot")
 
-will generate a file named `clj-deps.dot` with `clj-deps` dependency graph.
+will generate a file named `clj-deps.dot` with clj-deps dependency graph.
 If then you do:
 
      dot -Tpng clj-deps.dot -o clj-deps.png
 
-you turn that `.dot` file into this image (click to enlarge):
+you turn that .dot file into this image (click to enlarge):
 
 <a href="http://cloud.github.com/downloads/paraseba/clj-deps/clj-deps.png" title="clj-deps dependency graph">
   <img src="http://cloud.github.com/downloads/paraseba/clj-deps/clj-deps-thumb.png" style="width=100%;border:1px solid silver;"/>
