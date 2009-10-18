@@ -5,8 +5,9 @@
 
 (defmacro test-deps [libs, ns-form]
   (let [form `(quote ~ns-form)
-        name (second (second form))
-        result `(quote ~(cons name libs))]
+        namesp (dep/new-namesp (second (second form)))
+        libs (map #(dep/new-namesp %) libs)
+        result `(quote ~(cons namesp libs))]
     `(is (= ~result (dep/process-ns ~form)))))
 
 (deftest no-deps
@@ -41,7 +42,7 @@
   (test-deps (lib.a lib.b) (ns my-ns (:require (lib a [b :only pp])))))
 
 (deftest mixed
-  (test-deps (l1 l2 l3.a l3.b l4 l5) 
+  (test-deps (l1 l2 l3.a l3.b l4 l5)
              (ns #^{:author "SBG"} my-ns "docstring"
                (:use l1 [l2 :as p])
                (:require (l3 a [b :only p :as g]) l4 [l5])

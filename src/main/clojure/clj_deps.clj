@@ -10,16 +10,16 @@
   [sourcedir]
   (letfn [(to-map [res-map ns-form]
             (let [deps (process-ns ns-form)
-                  [name & deps] deps]
-              (assoc res-map name (or deps '()))))]
-  (reduce to-map {} (find-ns-decls-in-dir sourcedir))))
+                  [from & deps] deps]
+              (assoc res-map from (or deps '()))))]
+    (reduce to-map {} (find-ns-decls-in-dir sourcedir))))
 
 (defn dir-dep-graph [sourcedir]
   (map-to-graph (dir-dep-map sourcedir)))
 
 (defnk filter-dep-graph [graph :only nil :except nil :only-matching nil :except-matching nil]
   (letfn [(decorate [graph test filter] (if test (filter-graph graph filter) graph))
-          (match-filter [regex] #(re-find regex (name %)))]
+          (match-filter [regex] #(re-find regex (name (:sym %))))]
     (let [graph (decorate graph only only)
           graph (decorate graph except (complement except))
           graph (decorate graph only-matching (match-filter only-matching))
