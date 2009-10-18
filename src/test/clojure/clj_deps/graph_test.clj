@@ -17,9 +17,8 @@
 
 (defmacro graph-has-edges
   [graph & edges]
-  (let [edge-map (apply edge-list-to-map edges)]
-    `(is (= (set (keys ~edges)) (set (:nodes ~graph))))
-    `(is (eval-map-equal ~edge-map (:neighbors ~graph)))))
+  `(let [edge-map# (edge-list-to-map ~@edges)]
+    (is (eval-map-equal edge-map# (:neighbors ~graph)))))
 
 
 
