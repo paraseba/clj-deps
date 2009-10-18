@@ -8,12 +8,10 @@
 
 (def empty-graph (new-graph #{} {}))
 
-(defn add-edge [graph from to]
-  (let [nodes (:nodes graph)
-        neighbors (:neighbors graph)]
-    (new-graph
-      (conj nodes from to)
-      (merge-with union neighbors {from #{to}}))))
+(defn add-edge [{:keys (nodes neighbors)} from to]
+  (new-graph
+    (conj nodes from to)
+    (merge-with union neighbors {from #{to}})))
 
 (defn add-fan [graph from & to]
   (reduce #(add-edge %1 from %2) graph to))
@@ -26,3 +24,4 @@
   (letfn [(node-filter [nodes] (filter pred nodes))
           (edge-filter [neigh] #(filter pred (neigh %)))]
     (new-graph (node-filter (:nodes graph)) (edge-filter (:neighbors graph)))))
+
