@@ -21,7 +21,8 @@
   `(graph-has-edges ~g ~@(map new-namesp edges)))
 
 
-(deftest dir-dep-map
+
+(deftest test-dir-dep-map
   (is (= {(new-namesp 'a) (list (new-namesp 'b) (new-namesp 'dir1.a))
           (new-namesp 'b) (list (new-namesp 'dir2.a) (new-namesp 'dir2.b))
           (new-namesp 'dir1.a) (list (new-namesp 'dir1.b))
@@ -34,7 +35,7 @@
 
 (def dep-graph (m/dir-dep-graph source-tree-dir))
 
-(deftest dir-dep-graph
+(deftest test-dir-dep-graph
   (has-deps dep-graph
     'a 'b
     'a 'dir1.a
@@ -43,7 +44,7 @@
     'dir1.a 'dir1.b
     'dir2.b 'dir1.b))
 
-(deftest filter-dep-graph
+(deftest test-filter-dep-graph
   (has-deps (m/filter-dep-graph dep-graph :only (constantly true))
     'a 'b
     'a 'dir1.a
@@ -74,13 +75,12 @@
     'a 'dir1.a
     'dir1.a 'dir1.b)
 
-  (deftest combined-filters
+  (deftest test-combined-filters
     (has-deps (m/filter-dep-graph dep-graph :only-matching #"dir" :except-matching #"dir2")
     'dir1.a 'dir1.b)))
 
 
-
-(deftest write-dep-graph
+(deftest test-write-dep-graph
   (let [file (File/createTempFile "clj-deps-test" "dot")]
     (.deleteOnExit file)
     (m/write-dep-graph dep-graph file)

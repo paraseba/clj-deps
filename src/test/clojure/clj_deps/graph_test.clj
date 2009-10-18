@@ -22,12 +22,12 @@
 
 
 
-(deftest empty-graph
+(deftest test-empty-graph
   (is eg)
   (is (= 0 (count (:nodes eg)))
   (is (= 0 (count (:neighbors eg))))))
 
-(deftest add-edge
+(deftest test-add-edge
   (let [g12   (g/add-edge eg 1 2)
         g11   (g/add-edge eg 1 1)
         g123  (-> eg (g/add-edge 1 2) (g/add-edge 2 3))
@@ -38,7 +38,7 @@
     (graph-has-edges g123 1 2 2 3)
     (graph-has-edges g1231 1 2 2 3 3 1)))
 
-(deftest add-fan
+(deftest test-add-fan
   (let [g2   (g/add-fan eg 1 2)
         g23  (g/add-fan eg 1 2 3)
         g231 (g/add-fan eg 1 2 3 1)
@@ -49,7 +49,7 @@
     (graph-has-edges g231 1 2 1 3 1 1)
     (graph-has-edges g232 1 2 1 3 1 2)))
 
-(deftest map-to-graph
+(deftest test-map-to-graph
   (let [m12  (g/map-to-graph {1 [2]})
         m123 (g/map-to-graph {1 [2 3]})
         m123-456 (g/map-to-graph {1 [2 3] 4 [5 6]})]
@@ -58,7 +58,7 @@
     (graph-has-edges m123 1 2 1 3)
     (graph-has-edges m123-456 1 2 1 3 4 5 4 6)))
 
-(deftest graph-filter
+(deftest test-graph-filter
   (let [gab   (g/add-edge eg 'a 'b)
         gaa   (g/add-edge eg 'a 'a)
         gabc  (-> eg (g/add-edge 'a 'b) (g/add-edge 'b 'c))
