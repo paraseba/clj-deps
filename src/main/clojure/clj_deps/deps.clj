@@ -1,11 +1,5 @@
 (ns clj-deps.deps)
 
-(defstruct namesp :sym :atts)
-
-(defn new-namesp
-  ([sym] (struct namesp sym))
-  ([sym atts] (struct namesp sym atts)))
-
 (defn- is-dependency? [form]
   (and (list? form) (#{:require :use} (first form))))
 
@@ -17,16 +11,14 @@
 
 (defn- libspec-dependency [spec]
   (cond
-    (symbol? spec) (new-namesp spec)
-    (vector? spec) (new-namesp (first spec))
-    :else (new-namesp '---spec-error---)))
+    (symbol? spec) spec
+    (vector? spec) (first spec)
+    :else '---spec-error---))
 
 (defn- prefix-list-dependencies [spec]
   (let [[prefix & libspecs] spec]
     (letfn [(add-prefix [libspec]
-              (let [{:keys [sym atts]} (libspec-dependency libspec)
-                    sym (symbol (str prefix "." sym))]
-                (new-namesp sym atts)))]
+              (symbol (str prefix "." (libspec-dependency libspec))))]
       (vec (map add-prefix libspecs)))))
 
 (defn- spec-dependencies [spec]
@@ -41,5 +33,5 @@
 
 (defn process-ns [form]
   (let [[ns name & forms] form]
-    (cons (new-namesp name) (mapcat extract-dependencies forms))))
+    (cons name (mapcat extract-dependencies forms))))
 

@@ -19,7 +19,7 @@
 
 (defnk filter-dep-graph [graph :only nil :except nil :only-matching nil :except-matching nil]
   (letfn [(decorate [graph test filter] (if test (filter-graph graph filter) graph))
-          (match-filter [regex] #(re-find regex (name (:sym %))))]
+          (match-filter [regex] #(re-find regex (name %)))]
     (let [graph (decorate graph only only)
           graph (decorate graph except (complement except))
           graph (decorate graph only-matching (match-filter only-matching))

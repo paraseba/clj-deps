@@ -7,9 +7,10 @@
   (str "\"" from "\" -> \"" to "\""))
 
 (defn- adj-list [graph]
-  (let [node-adj-list (fn [node]
-                       (map vector (repeat node) (get-neighbors graph node)))]
-    (mapcat node-adj-list (:nodes graph))))
+  (letfn [(node-adj-list
+            [node]
+            (map vector (repeat node) (get-neighbors graph node)))]
+    (mapcat node-adj-list (sort (:nodes graph)))))
 
 (defn dot-graph-edges [graph]
   (let [al (adj-list graph)]
@@ -20,5 +21,4 @@
     "digraph G {\n"
     (dot-graph-edges graph)
     "\n}\n"))
-
 

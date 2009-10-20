@@ -3,7 +3,6 @@
   (:use clojure.test
         [clojure.contrib.java-utils :only (file)]
         [clj-deps.dot :only (graph-to-dot)]
-        [clj-deps.deps :only (new-namesp)]
         [clj-deps.graph-test :only (graph-has-edges)])
   (:require [clj-deps :as m]))
 
@@ -16,19 +15,14 @@
 (def source-tree-dir-name (.getPath source-tree-dir))
 
 
-(defmacro has-deps
-  [g & edges]
-  `(graph-has-edges ~g ~@(map new-namesp edges)))
-
-
 
 (deftest test-dir-dep-map
-  (is (= {(new-namesp 'a) (list (new-namesp 'b) (new-namesp 'dir1.a))
-          (new-namesp 'b) (list (new-namesp 'dir2.a) (new-namesp 'dir2.b))
-          (new-namesp 'dir1.a) (list (new-namesp 'dir1.b))
-          (new-namesp 'dir1.b) '()
-          (new-namesp 'dir2.a) '()
-          (new-namesp 'dir2.b) (list (new-namesp 'dir1.b))}
+  (is (= {'a '(b dir1.a)
+          'b '(dir2.a dir2.b)
+          'dir1.a '(dir1.b)
+          'dir1.b '()
+          'dir2.a '()
+          'dir2.b '(dir1.b)}
          (m/dir-dep-map source-tree-dir))))
 
 
@@ -36,7 +30,7 @@
 (def dep-graph (m/dir-dep-graph source-tree-dir))
 
 (deftest test-dir-dep-graph
-  (has-deps dep-graph
+  (graph-has-edges dep-graph
     'a 'b
     'a 'dir1.a
     'b 'dir2.a
@@ -45,7 +39,7 @@
     'dir2.b 'dir1.b))
 
 (deftest test-filter-dep-graph
-  (has-deps (m/filter-dep-graph dep-graph :only (constantly true))
+  (graph-has-edges (m/filter-dep-graph dep-graph :only (constantly true))
     'a 'b
     'a 'dir1.a
     'b 'dir2.a
@@ -53,30 +47,30 @@
     'dir1.a 'dir1.b
     'dir2.b 'dir1.b)
 
-  (has-deps (m/filter-dep-graph dep-graph :only #(re-find #"^(a|b)|(dir1\..*)$" (name (:sym %))))
+  (graph-has-edges (m/filter-dep-graph dep-graph :only #(re-find #"^(a|b)|(dir1\..*)$" (name %)))
     'a 'b
     'a 'dir1.a
     'dir1.a 'dir1.b)
 
-  (has-deps (m/filter-dep-graph dep-graph :only #(re-find #"^(a|b)|(dir1\..*)$" (name (:sym %))))
+  (graph-has-edges (m/filter-dep-graph dep-graph :only #(re-find #"^(a|b)|(dir1\..*)$" (name %)))
     'a 'b
     'a 'dir1.a
     'dir1.a 'dir1.b)
 
-  (has-deps (m/filter-dep-graph dep-graph :except #(re-find #"dir" (name (:sym %))))
+  (graph-has-edges (m/filter-dep-graph dep-graph :except #(re-find #"dir" (name %)))
     'a 'b)
 
-  (has-deps (m/filter-dep-graph dep-graph :only-matching #"dir")
+  (graph-has-edges (m/filter-dep-graph dep-graph :only-matching #"dir")
     'dir1.a 'dir1.b
     'dir2.b 'dir1.b)
 
-  (has-deps (m/filter-dep-graph dep-graph :except-matching #"dir2")
+  (graph-has-edges (m/filter-dep-graph dep-graph :except-matching #"dir2")
     'a 'b
     'a 'dir1.a
     'dir1.a 'dir1.b)
 
   (deftest test-combined-filters
-    (has-deps (m/filter-dep-graph dep-graph :only-matching #"dir" :except-matching #"dir2")
+    (graph-has-edges (m/filter-dep-graph dep-graph :only-matching #"dir" :except-matching #"dir2")
     'dir1.a 'dir1.b)))
 
 

@@ -5,9 +5,8 @@
 
 (defmacro test-deps [libs, ns-form]
   (let [form `(quote ~ns-form)
-        namesp (dep/new-namesp (second (second form)))
-        libs (map #(dep/new-namesp %) libs)
-        result `(quote ~(cons namesp libs))]
+        name (second (second form))
+        result `(quote ~(cons name libs))]
     `(is (= ~result (dep/process-ns ~form)))))
 
 (deftest test-no-deps

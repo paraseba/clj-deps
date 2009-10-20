@@ -49,6 +49,20 @@
     (graph-has-edges g231 1 2 1 3 1 1)
     (graph-has-edges g232 1 2 1 3 1 2)))
 
+(deftest test-node-data
+  (let [g12 (g/add-edge eg 1 2)]
+    (is (= nil (g/get-node-data g12 1)))
+    (is (= nil (g/get-node-data g12 2)))
+    (is (= {:foo :bar} (g/get-node-data (g/set-node-data g12 1 {:foo :bar}) 1)))
+    (is (= {:fuu :bar} (g/get-node-data (g/set-node-data g12 2 {:fuu :bar}) 2)))
+    (is (= {:foo :bar} (g/get-node-data (g/add-node-data g12 1 {:foo :bar}) 1)))
+    (is (= {:fuu :bar} (g/get-node-data (g/add-node-data g12 2 {:fuu :bar}) 2)))
+    (let [d1 (g/add-node-data g12 1 {:foo :bar})]
+      (is (= {:foo :grr} (g/get-node-data (g/add-node-data d1 1 {:foo :grr}) 1)))
+      (is (= {:foo :bar} (g/get-node-data (g/add-node-data d1 2 {:bar :foo}) 1)))
+      (is (= {:bar :foo :foo :bar} (g/get-node-data (g/add-node-data d1 1 {:bar :foo}) 1)) ))))
+
+
 (deftest test-map-to-graph
   (let [m12  (g/map-to-graph {1 [2]})
         m123 (g/map-to-graph {1 [2 3]})
@@ -64,7 +78,7 @@
         gabc  (-> eg (g/add-edge 'a 'b) (g/add-edge 'b 'c))
         gabca (-> eg (g/add-edge 'a 'b) (g/add-edge 'b 'c) (g/add-edge 'c 'a))]
 
-    (graph-has-edges (g/filter-graph eg (constantly true))) 
+    (graph-has-edges (g/filter-graph eg (constantly true)))
     (graph-has-edges (g/filter-graph eg (constantly false)))
     (graph-has-edges (g/filter-graph gab (constantly true)) 'a 'b)
     (graph-has-edges (g/filter-graph gab #(= 'a %)))
