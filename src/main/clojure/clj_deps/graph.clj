@@ -36,7 +36,7 @@
   (new-graph (merge-with merge node-data {node-id data}) topology))
 
 (defn get-node-data
-  [{:keys (node-data _) as :graph} node-id]
+  [{:keys (node-data) as :graph} node-id]
   (node-data node-id))
 
 (defn- add-node
@@ -63,4 +63,10 @@
   (letfn [(node-filter [nodes] (filter pred nodes))
           (edge-filter [neigh] #(filter pred (neigh %)))]
     (new-graph (node-filter (:nodes graph)) (edge-filter (:neighbors graph)))))
+
+(defn map-graph
+  [f {:keys (node-data topology) as :graph}]
+  (letfn [(mapf [res [id atts]] (assoc res id (f id atts)))]
+    (let [new-data (reduce mapf {} node-data)]
+      (new-graph new-data topology))))
 

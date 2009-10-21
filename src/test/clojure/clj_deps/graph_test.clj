@@ -87,3 +87,8 @@
     (graph-has-edges (g/filter-graph (constantly true) gabc) 'a 'b 'b 'c)
     (graph-has-edges (g/filter-graph #(not= 'b %) gabc))))
 
+(deftest test-map-graph
+  (let [gab (g/add-edge eg :a :b)]
+    (is (= {:name :a} (g/get-node-data (g/map-graph (fn [id atts] {:name id}) gab) :a)))
+    (is (= {:name :b} (g/get-node-data (g/map-graph (fn [id atts] {:name id}) gab) :b)))))
+
