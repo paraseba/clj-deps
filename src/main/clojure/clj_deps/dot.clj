@@ -3,8 +3,10 @@
      (clojure.contrib [graph :only (get-neighbors)]
                       [str-utils2 :only (join)])))
 
+(defn- escape [name] (.replace (str name) "\"" "\\\""))
+
 (defn edge-repr [from to]
-  (str "\"" from "\" -> \"" to "\""))
+  (str "\"" (escape from) "\" -> \"" (escape to) "\""))
 
 (defn- adj-list [graph]
   (letfn [(node-adj-list

@@ -8,7 +8,8 @@
 
 (deftest test-edge-repr
   (is (= "\"1\" -> \"2\"" (d/edge-repr 1 2)))
-  (is (= "\"hi\" -> \"bye\"" (d/edge-repr "hi" "bye"))))
+  (is (= "\"hi\" -> \"bye\"" (d/edge-repr "hi" "bye")))
+  (is (= "\"quoted \\\"works\\\"\" -> \"yes\"" (d/edge-repr "quoted \"works\"" "yes"))))
 
 (def eg g/empty-graph)
 
