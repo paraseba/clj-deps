@@ -14,11 +14,13 @@
               (assoc res-map from (or deps '()))))]
     (reduce to-map {} (find-ns-decls-in-dir sourcedir))))
 
-(defn dir-dep-graph [sourcedir]
+(defn dir-dep-graph
+  [sourcedir]
   (map-to-graph (dir-dep-map sourcedir)))
 
-(defnk filter-dep-graph [graph :only nil :except nil :only-matching nil :except-matching nil]
-  (letfn [(decorate [graph test filter] (if test (filter-graph graph filter) graph))
+(defnk filter-dep-graph
+  [graph :only nil :except nil :only-matching nil :except-matching nil]
+  (letfn [(decorate [graph test filter] (if test (filter-graph filter graph) graph))
           (match-filter [regex] #(re-find regex (name %)))]
     (let [graph (decorate graph only only)
           graph (decorate graph except (complement except))

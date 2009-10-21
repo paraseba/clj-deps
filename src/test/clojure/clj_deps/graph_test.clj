@@ -72,18 +72,18 @@
     (graph-has-edges m123 1 2 1 3)
     (graph-has-edges m123-456 1 2 1 3 4 5 4 6)))
 
-(deftest test-graph-filter
+(deftest test-filter-graph
   (let [gab   (g/add-edge eg 'a 'b)
         gaa   (g/add-edge eg 'a 'a)
         gabc  (-> eg (g/add-edge 'a 'b) (g/add-edge 'b 'c))
         gabca (-> eg (g/add-edge 'a 'b) (g/add-edge 'b 'c) (g/add-edge 'c 'a))]
 
-    (graph-has-edges (g/filter-graph eg (constantly true)))
-    (graph-has-edges (g/filter-graph eg (constantly false)))
-    (graph-has-edges (g/filter-graph gab (constantly true)) 'a 'b)
-    (graph-has-edges (g/filter-graph gab #(= 'a %)))
-    (graph-has-edges (g/filter-graph gab #(= 'b %)))
-    (graph-has-edges (g/filter-graph gab (constantly false)))
-    (graph-has-edges (g/filter-graph gabc (constantly true)) 'a 'b 'b 'c)
-    (graph-has-edges (g/filter-graph gabc #(not= 'b %)))))
+    (graph-has-edges (g/filter-graph (constantly true) eg))
+    (graph-has-edges (g/filter-graph (constantly false) eg))
+    (graph-has-edges (g/filter-graph (constantly true) gab) 'a 'b)
+    (graph-has-edges (g/filter-graph #(= 'a %) gab))
+    (graph-has-edges (g/filter-graph #(= 'b %) gab))
+    (graph-has-edges (g/filter-graph (constantly false) gab))
+    (graph-has-edges (g/filter-graph (constantly true) gabc) 'a 'b 'b 'c)
+    (graph-has-edges (g/filter-graph #(not= 'b %) gabc))))
 

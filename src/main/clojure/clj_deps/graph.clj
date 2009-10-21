@@ -59,7 +59,7 @@
   (reduce #(apply add-fan %1 (first %2) (second %2)) empty-graph m))
 
 (defn filter-graph
-  [graph pred]
+  [pred graph]
   (letfn [(node-filter [nodes] (filter pred nodes))
           (edge-filter [neigh] #(filter pred (neigh %)))]
     (new-graph (node-filter (:nodes graph)) (edge-filter (:neighbors graph)))))
