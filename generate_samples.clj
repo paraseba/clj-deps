@@ -82,7 +82,7 @@
         outfile (file out-dir "clj_deps.dot")
         graph (dir-dep-graph indir)]
     (do
-      (write-dep-graph (map-graph clj-deps-node-atts graph) outfile)
+      (save-graph (map-graph clj-deps-node-atts graph) outfile)
       (dot2png outfile))))
 
 (defn generate-simple-clj-deps-graph  []
@@ -100,7 +100,7 @@
                 graph
                 :only-matching #"^cascade\."
                 :except-matching #"^cascade\.(internal\.|fail|config)")]
-    (write-dep-graph (map-graph cascade-node-atts graph) outfile)
+    (save-graph (map-graph cascade-node-atts graph) outfile)
     (dot2png outfile)))
 
 (defn generate-compojure-graph  []
@@ -110,7 +110,7 @@
         graph (filter-dep-graph
                 graph
                 :only-matching #"^compojure\.")]
-    (write-dep-graph (map-graph compojure-node-atts graph) outfile)
+    (save-graph (map-graph compojure-node-atts graph) outfile)
     (dot2png outfile)))
 
 (defn generate-contrib-graph  []
@@ -120,11 +120,12 @@
         graph (filter-dep-graph
                 graph
                 :except-matching #"test|example|def$|seq-utils")]
-    (write-dep-graph (map-graph contrib-node-atts graph) outfile)
+    (save-graph (map-graph contrib-node-atts graph) outfile)
     (dot2png outfile)))
 
 
 (generate-clj-deps-graph)
+(generate-simple-clj-deps-graph)
 (generate-cascade-graph)
 (generate-compojure-graph)
 (generate-contrib-graph)

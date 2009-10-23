@@ -74,9 +74,9 @@
     'dir1.a 'dir1.b)))
 
 
-(deftest test-write-dep-graph
+(deftest test-save-graph
   (let [file (File/createTempFile "clj-deps-test" "dot")]
     (.deleteOnExit file)
-    (m/write-dep-graph dep-graph file)
+    (m/save-graph dep-graph file)
     (is (= (graph-to-dot dep-graph) (slurp (.getPath file))))))
 

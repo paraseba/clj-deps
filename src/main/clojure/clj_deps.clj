@@ -29,7 +29,7 @@
           graph (decorate graph except-matching (complement (match-filter except-matching)))]
       graph)))
 
-(defn write-dep-graph
+(defn save-graph
   [graph out]
   (with-open [out (writer out)]
     (. out write (graph-to-dot graph))))
