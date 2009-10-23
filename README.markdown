@@ -13,7 +13,7 @@ some namespaces of your system or its dependencies.
 Usage
 =====
 
-* You need Maven 2 installed in your system
+* You may want Maven 2 installed in your system
 * Install clj-deps cloning the repository: `git clone git://github.com/paraseba/clj-deps.git`
 * Run `mvn install`
 * There are some useful goals:
@@ -45,7 +45,7 @@ Example
 
 This call
 
-     (write-dependency-graph "clj-deps/src" "clj-deps.dot")
+     (save-graph (dir-dep-graph "clj-deps/src") "clj-deps.dot")
 
 will generate a file named `clj-deps.dot` with clj-deps dependency graph.
 If then you do:
@@ -58,14 +58,14 @@ you turn that .dot file into this image (click to enlarge):
   <img src="http://cloud.github.com/downloads/paraseba/clj-deps/clj-deps-thumb.png" style="width=100%;border:1px solid silver;"/>
 </a>
 
+Using other functions you can turn that in a nicer image, see the
+[wiki](http://wiki.github.com/paraseba/clj-deps) for more examples and usage information.
+
 
 ToDo
 ====
 
 * Document
-* Add to Maven repo
-* Namespace translation
-* Custom node attributes
 * Command line interface
 * Automatic image generation
 
