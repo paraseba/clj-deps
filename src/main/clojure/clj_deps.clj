@@ -2,7 +2,8 @@
   (:import java.io.File)
   (:use (clojure.contrib [find-namespaces :only (find-ns-decls-in-dir)]
                          [duck-streams :only (writer)]
-                         [def :only (defnk)])
+                         [def :only (defnk)]
+                         [java-utils :only (file)])
      clj-deps.graph clj-deps.dot clj-deps.deps))
 
 
@@ -12,7 +13,7 @@
             (let [deps (process-ns ns-form)
                   [from & deps] deps]
               (assoc res-map from (or deps '()))))]
-    (reduce to-map {} (find-ns-decls-in-dir sourcedir))))
+    (reduce to-map {} (find-ns-decls-in-dir (file sourcedir)))))
 
 (defn dir-dep-graph
   [sourcedir]
