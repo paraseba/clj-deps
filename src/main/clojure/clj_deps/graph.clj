@@ -59,10 +59,10 @@
   (reduce #(apply add-fan %1 (first %2) (second %2)) empty-graph m))
 
 (defn filter-graph
-  [pred graph]
-  (letfn [(node-filter [nodes] (filter pred nodes))
-          (edge-filter [neigh] #(filter pred (neigh %)))]
-    (new-graph (node-filter (:nodes graph)) (edge-filter (:neighbors graph)))))
+  [pred {:keys (node-data topology)}]
+  (let [filt-nodes (select-keys node-data (filter pred (keys node-data)))
+        filt-topo #(filter pred (topology %))]
+    (new-graph filt-nodes filt-topo)))
 
 (defn map-graph
   [f {:keys (node-data topology) as :graph}]
