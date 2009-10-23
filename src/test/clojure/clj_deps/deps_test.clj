@@ -18,7 +18,8 @@
   (test-deps () (ns my-ns (:refer-clojure :exclude [printf])))
   (test-deps () (ns my-ns (:import java.util.Date (java.sql Connection))))
   (test-deps () (ns my-ns (:load "path")))
-  (test-deps () (ns my-ns (:get-class))))
+  (test-deps () (ns my-ns (:get-class)))
+  (test-deps (foo) (ns my-ns (:require foo :reload :reload-all :verbose))))
 
 (deftest test-simple-libspec
   (test-deps (my-lib) (ns my-ns (:use my-lib)))

@@ -13,7 +13,7 @@
   (cond
     (symbol? spec) spec
     (vector? spec) (first spec)
-    :else '---spec-error---))
+    :else '--spec-error--))
 
 (defn- prefix-list-dependencies [spec]
   (let [[prefix & libspecs] spec]
@@ -21,11 +21,14 @@
               (symbol (str prefix "." (libspec-dependency libspec))))]
       (vec (map add-prefix libspecs)))))
 
+(defn is-flag? [spec] (#{:reload :reload-all :verbose} spec))
+
 (defn- spec-dependencies [spec]
   (cond
     (is-libspec? spec) [(libspec-dependency spec)]
     (is-prefix-list? spec) (prefix-list-dependencies spec)
-    :else ['unknown]))
+    (is-flag? spec) []
+    :else ['--spec-error--]))
 
 (defn- extract-dependencies [form]
   (when-let [dep-type (and (is-dependency? form) (first form))]
