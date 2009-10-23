@@ -1,7 +1,7 @@
 (ns clj-deps.dot
   (:use
      (clojure.contrib [graph :only (get-neighbors)]
-                      [str-utils2 :only (join)]
+                      [str-utils2 :only (join blank?)]
                       [java-utils :only (as-str)])
      [clj-deps.graph :only (get-node-data)]))
 
@@ -37,10 +37,12 @@
 
 (defn graph-to-dot
   [graph]
-  (str
-    "digraph G {\n"
-    (dot-graph-nodes graph)
-    ";\n"
-    (dot-graph-edges graph)
-    "\n}\n"))
+  (let [nodes (dot-graph-nodes graph)
+        edges (dot-graph-edges graph)]
+    (str
+      "digraph G {\n"
+      nodes
+      (if-not (blank? nodes) ";\n")
+      edges
+      "\n}\n")))
 

@@ -31,5 +31,6 @@
         (is (= "\"1\" [\"label\"=\"one\"];\n\"2\" [\"label\"=\"two\"]" (d/dot-graph-nodes g))))
 
     (deftest test-graph-to-dot
+      (is (= "digraph G {\n\n}\n" (d/graph-to-dot eg)))
       (is (= (str "digraph G {\n" (d/dot-graph-nodes g12) ";\n" (d/dot-graph-edges g12) "\n}\n") (d/graph-to-dot g12)))
       (is (= (str "digraph G {\n" (d/dot-graph-nodes g) ";\n" (d/dot-graph-edges g) "\n}\n") (d/graph-to-dot g))))))
