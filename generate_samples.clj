@@ -11,6 +11,9 @@
 (defn shape-atts [shape] {:shape shape})
 (defn label-atts [label] {:label label})
 (defn style-atts [style] {:style style})
+(defn font-atts
+  ([fontsize] {:fontsize fontsize})
+  ([fontsize fontname] {:fantsize fontsize :fontname fontname}))
 
 (def in-dir "/tmp")
 (def out-dir "/tmp")
@@ -38,6 +41,11 @@
                           (shape-atts sec-shape)
                           (style-atts sec-style))
       (merge (color-atts main-color) (shape-atts main-shape) (style-atts main-style)))))
+
+(defn clj-deps-simple-node-atts [ns atts]
+  (let [ns (str ns)]
+    (merge (font-atts 10)
+           (label-atts (replace ns #"^clojure\.contrib" "contrib")))))
 
 
 (defn cascade-node-atts [ns atts]
@@ -89,7 +97,7 @@
   (let [indir (file in-dir "clj-deps" "src/main")
         outfile (file out-dir "clj_deps_simple.dot")
         graph (dir-dep-graph indir)]
-    (save-graph graph outfile)
+    (save-graph (map-graph clj-deps-simple-node-atts graph) outfile)
     (dot2png outfile)))
 
 (defn generate-cascade-graph  []
