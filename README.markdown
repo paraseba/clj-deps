@@ -61,7 +61,7 @@ you turn that .dot file into this image (click to enlarge):
 Using other functions you can turn that in a nicer image like the following:
 
 <a href="http://cloud.github.com/downloads/paraseba/clj-deps/clj_deps.png" title="clj-deps dependency graph">
-  <img src="http://cloud.github.com/downloads/paraseba/clj-deps/clj_deps.png" style="width=100%;border:1px solid silver;"/>
+  <img src="http://cloud.github.com/downloads/paraseba/clj-deps/clj_deps.png" style="width=800px;border:1px solid silver;"/>
 </a>
 
 see the
