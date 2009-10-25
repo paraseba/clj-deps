@@ -55,13 +55,13 @@ If then you do:
 you turn that .dot file into this image (click to enlarge):
 
 <a href="http://cloud.github.com/downloads/paraseba/clj-deps/clj_deps_simple.png" title="clj-deps dependency graph">
-  <img src="http://cloud.github.com/downloads/paraseba/clj-deps/clj_deps_simple.png" style="width=100%;border:1px solid silver;"/>
+  <img width="900" src="http://cloud.github.com/downloads/paraseba/clj-deps/clj_deps_simple.png"/> 
 </a>
 
 Using other functions you can turn that in a nicer image like the following:
 
 <a href="http://cloud.github.com/downloads/paraseba/clj-deps/clj_deps.png" title="clj-deps dependency graph">
-  <img src="http://cloud.github.com/downloads/paraseba/clj-deps/clj_deps.png" style="width=800px;border:1px solid silver;"/>
+  <img width="900" src="http://cloud.github.com/downloads/paraseba/clj-deps/clj_deps.png"/>
 </a>
 
 see the
