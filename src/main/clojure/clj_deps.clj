@@ -3,7 +3,8 @@
   (:use (clojure.contrib [find-namespaces :only (find-ns-decls-in-dir)]
                          [duck-streams :only (writer)]
                          [def :only (defnk)]
-                         [java-utils :only (file)])
+                         [shell-out :only (sh)]
+                         [java-utils :only (file as-str)])
      clj-deps.graph clj-deps.dot clj-deps.deps))
 
 
@@ -34,3 +35,14 @@
   (with-open [out (writer out)]
     (. out write (graph-to-dot graph))))
 
+(defn dot2image
+  ([dotfile] (dot2image dotfile :png))
+  ([dotfile format] (dot2image dotfile format "dot"))
+  ([dotfile format dotexe]
+   (let [dotfile (file dotfile)
+         format (as-str format)
+         name (.getName dotfile)
+         basename (subs name 0 (.lastIndexOf name "."))
+         new-name (str basename "." format)
+         new-file (file (.getParentFile dotfile) new-name)]
+     (sh dotexe "-T" format "-o" (.getPath new-file) (.getPath dotfile)))))

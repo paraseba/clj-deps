@@ -74,9 +74,33 @@
     'dir1.a 'dir1.b)))
 
 
+(def dot-file (File/createTempFile "clj-deps-test" ".dot"))
+(.deleteOnExit dot-file)
+(def dot-file-basename (let [name (.getName dot-file)]
+                             (subs name 0 (.lastIndexOf name "."))))
+
 (deftest test-save-graph
-  (let [file (File/createTempFile "clj-deps-test" "dot")]
-    (.deleteOnExit file)
-    (m/save-graph dep-graph file)
-    (is (= (graph-to-dot dep-graph) (slurp (.getPath file))))))
+  (m/save-graph dep-graph dot-file)
+  (is (= (graph-to-dot dep-graph) (slurp (.getPath dot-file)))))
+
+(deftest test-dot2image
+  (test-save-graph)
+  (let [tmpdir (.getParent dot-file)
+        png-file (file tmpdir (str dot-file-basename ".png"))
+        gif-file (file tmpdir (str dot-file-basename ".gif"))]
+    (.deleteOnExit png-file)
+    (.deleteOnExit gif-file)
+    (deftest png-out
+      (is (not (.isFile png-file)))
+      (m/dot2image dot-file)
+      (is (.isFile png-file)))
+    (deftest gif-out
+      (is (not (.isFile gif-file)))
+      (m/dot2image dot-file "gif")
+      (is (.isFile gif-file)))
+    (deftest with-exe
+      (.delete png-file)
+      (is (not (.isFile png-file)))
+      (m/dot2image dot-file :png "dot")
+      (is (.isFile png-file)))))
 

@@ -4,7 +4,6 @@
         [clj-deps.graph :only (map-graph)])
   (:use (clojure.contrib
           [str-utils2 :only (replace)]
-          [shell-out :only (sh)]
           [java-utils :only (file)])))
 
 (defn color-atts [color] {:color color :fontcolor color})
@@ -76,14 +75,6 @@
              (shape-atts other-shape)
              (style-atts other-style)))))
 
-(defn dot2png
-  [dotfile]
-  (let [name (.getName dotfile)
-        basename (subs name 0 (.lastIndexOf name "."))
-        new-name (str basename ".png")
-        new-file (file (.getParentFile dotfile) new-name)]
-    (sh dot-exe "-Tpng" (.getPath dotfile) "-o" (.getPath new-file))))
-
 
 (defn generate-clj-deps-graph  []
   (let [indir (file in-dir "clj-deps" "src/main")
@@ -91,14 +82,14 @@
         graph (dir-dep-graph indir)]
     (do
       (save-graph (map-graph clj-deps-node-atts graph) outfile)
-      (dot2png outfile))))
+      (dot2image outfile))))
 
 (defn generate-simple-clj-deps-graph  []
   (let [indir (file in-dir "clj-deps" "src/main")
         outfile (file out-dir "clj_deps_simple.dot")
         graph (dir-dep-graph indir)]
     (save-graph (map-graph clj-deps-simple-node-atts graph) outfile)
-    (dot2png outfile)))
+    (dot2image outfile)))
 
 (defn generate-cascade-graph  []
   (let [indir (file in-dir "cascade" "src/main/clojure")
@@ -109,7 +100,7 @@
                 :only-matching #"^cascade\."
                 :except-matching #"^cascade\.(internal\.|fail|config)")]
     (save-graph (map-graph cascade-node-atts graph) outfile)
-    (dot2png outfile)))
+    (dot2image outfile)))
 
 (defn generate-compojure-graph  []
   (let [indir (file in-dir "compojure" "src/compojure")
@@ -119,7 +110,7 @@
                 graph
                 :only-matching #"^compojure\.")]
     (save-graph (map-graph compojure-node-atts graph) outfile)
-    (dot2png outfile)))
+    (dot2image outfile)))
 
 (defn generate-contrib-graph  []
   (let [indir (file in-dir "clojure-contrib" "src/clojure/contrib")
@@ -129,7 +120,7 @@
                 graph
                 :except-matching #"test|example|def$|seq-utils")]
     (save-graph (map-graph contrib-node-atts graph) outfile)
-    (dot2png outfile)))
+    (dot2image outfile)))
 
 
 (generate-clj-deps-graph)

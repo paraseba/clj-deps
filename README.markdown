@@ -48,11 +48,11 @@ This call
      (save-graph (dir-dep-graph "clj-deps/src") "clj-deps.dot")
 
 will generate a file named `clj-deps.dot` with clj-deps dependency graph.
-If then you do:
+Now you can use `dot2image` function or just do:
 
      dot -Tpng clj-deps.dot -o clj-deps.png
 
-you turn that .dot file into this image (click to enlarge):
+to turn that .dot file into this image (click to enlarge):
 
 <a href="http://cloud.github.com/downloads/paraseba/clj-deps/clj_deps_simple.png" title="clj-deps dependency graph">
   <img src="http://cloud.github.com/downloads/paraseba/clj-deps/clj_deps_simple.png"/> 
