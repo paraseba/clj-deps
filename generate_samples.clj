@@ -37,8 +37,8 @@
                                   (label-atts (replace ns #"^clojure\.contrib" "contr"))
                                   (style-atts other-style))
       #"^clojure\." (merge (color-atts sec-color)
-                          (shape-atts sec-shape)
-                          (style-atts sec-style))
+                           (shape-atts sec-shape)
+                           (style-atts sec-style))
       (merge (color-atts main-color) (shape-atts main-shape) (style-atts main-style)))))
 
 (defn clj-deps-simple-node-atts [ns atts]
@@ -80,9 +80,8 @@
   (let [indir (file in-dir "clj-deps" "src/main")
         outfile (file out-dir "clj_deps.dot")
         graph (dir-dep-graph indir)]
-    (do
-      (save-graph (map-graph clj-deps-node-atts graph) outfile)
-      (dot2image outfile))))
+    (save-graph (map-graph clj-deps-node-atts graph) outfile)
+    (dot2image outfile)))
 
 (defn generate-simple-clj-deps-graph  []
   (let [indir (file in-dir "clj-deps" "src/main")
